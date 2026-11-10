@@ -1,2 +1,1 @@
-# sce-projects-preview
-noindex preview
+SCE Projects

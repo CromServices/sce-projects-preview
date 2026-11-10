@@ -11,7 +11,7 @@
     "Air conditioning and ventilation",
     "Refrigeration"
   ];
-  var TIMES = ["Morning", "Midday", "Afternoon"];
+  var TIMES = ["Morning", "Afternoon", "Either"];
 
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
@@ -106,7 +106,6 @@
       btn.setAttribute("role", "radio");
       btn.setAttribute("aria-checked", "false");
       btn.tabIndex = -1;
-      btn.dataset.iso = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
       btn.dataset.label = shortDate(d);
       btn.setAttribute("aria-label", shortDate(d) + (weekend ? ", weekend unavailable" : ""));
       if (weekend) btn.setAttribute("aria-disabled", "true");
@@ -121,7 +120,7 @@
     }
   }
 
-  function buildPills(container, items, name) {
+  function buildPills(container, items) {
     items.forEach(function (label, i) {
       var btn = document.createElement("button");
       btn.type = "button";
@@ -247,6 +246,107 @@
     });
   }
 
+  function initLightbox() {
+    var items = Array.prototype.slice.call(document.querySelectorAll("[data-lightbox]"));
+    var root = document.querySelector(".lightbox");
+    if (!items.length || !root) return;
+    var img = root.querySelector(".lightbox-stage img");
+    var cap = root.querySelector("[data-lb-caption]");
+    var count = root.querySelector("[data-lb-count]");
+    var btnClose = root.querySelector(".lightbox-close");
+    var btnPrev = root.querySelector(".lightbox-prev");
+    var btnNext = root.querySelector(".lightbox-next");
+    var index = 0;
+    var lastFocus = null;
+    var startX = 0;
+    var startY = 0;
+
+    function focusables() {
+      return [btnClose, btnPrev, btnNext].filter(function (el) { return el && !el.hidden; });
+    }
+
+    function show(i) {
+      index = (i + items.length) % items.length;
+      var el = items[index];
+      img.src = el.getAttribute("data-full") || el.currentSrc || el.src;
+      img.alt = el.alt || "";
+      cap.textContent = el.getAttribute("data-caption") || el.alt || "";
+      count.textContent = (index + 1) + " / " + items.length;
+      btnPrev.hidden = items.length < 2;
+      btnNext.hidden = items.length < 2;
+    }
+
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      root.hidden = false;
+      document.body.classList.add("is-locked");
+      btnClose.focus();
+    }
+
+    function close() {
+      root.hidden = true;
+      img.removeAttribute("src");
+      document.body.classList.remove("is-locked");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    items.forEach(function (el, i) {
+      el.addEventListener("click", function (e) {
+        e.preventDefault();
+        open(i);
+      });
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open(i);
+        }
+      });
+    });
+
+    btnClose.addEventListener("click", close);
+    btnPrev.addEventListener("click", function () { show(index - 1); });
+    btnNext.addEventListener("click", function () { show(index + 1); });
+    root.addEventListener("click", function (e) {
+      if (e.target === root) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (root.hidden) return;
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowLeft") show(index - 1);
+      if (e.key === "ArrowRight") show(index + 1);
+      if (e.key === "Tab") {
+        var list = focusables();
+        if (!list.length) return;
+        var first = list[0];
+        var last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+    root.addEventListener("touchstart", function (e) {
+      if (!e.changedTouches[0]) return;
+      startX = e.changedTouches[0].clientX;
+      startY = e.changedTouches[0].clientY;
+    }, { passive: true });
+    root.addEventListener("touchend", function (e) {
+      if (!e.changedTouches[0]) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) show(index + 1);
+        else show(index - 1);
+      } else if (dy > 80 && Math.abs(dy) > Math.abs(dx)) {
+        close();
+      }
+    }, { passive: true });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     initTheme();
     syncHeaderH();
@@ -256,5 +356,6 @@
     }
     document.querySelectorAll("[data-booking]").forEach(initBooking);
     document.querySelectorAll("[data-quote]").forEach(initQuote);
+    initLightbox();
   });
 })();
