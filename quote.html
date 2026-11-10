@@ -59,17 +59,17 @@
       <ol class="steps">
         <li data-n="1">Fill in your name, phone, email, suburb and a short description of the work.</li>
         <li data-n="2">Hit “Request a quote”.</li>
-        <li data-n="3">You’ll see a short thank-you.</li>
+        <li data-n="3">That’s it — your request is in.</li>
         <li data-n="4">We call you back to talk through the job and confirm a time.</li>
       </ol>
       <p class="help" style="margin-top:24px">Phone <a href="tel:0407773979">0407 773 979</a><br>Email <a href="mailto:phil@sceprojects.com.au">phil@sceprojects.com.au</a></p>
     </div>
     <div>
-    <form class="form-card" action="#" method="post">
-      <label>Name <input type="text" name="name" autocomplete="name" required><span class="field-error" data-error="name"></span></label>
-      <label>Phone <input type="tel" name="phone" autocomplete="tel" required><span class="field-error" data-error="phone"></span></label>
-      <label>Email <input type="email" name="email" autocomplete="email" required><span class="field-error" data-error="email"></span></label>
-      <label>Suburb or address <input type="text" name="suburb" autocomplete="street-address" required><span class="field-error" data-error="suburb"></span></label>
+    <form class="form-card" action="#" method="post" novalidate>
+      <label>Name <input type="text" name="name" autocomplete="name" required aria-describedby="quote-quote-err-name"><span id="quote-quote-err-name" class="field-error" data-error="name" role="status" aria-live="polite"></span></label>
+      <label>Phone <input type="tel" name="phone" autocomplete="tel" required aria-describedby="quote-quote-err-phone"><span id="quote-quote-err-phone" class="field-error" data-error="phone" role="status" aria-live="polite"></span></label>
+      <label>Email <input type="email" name="email" autocomplete="email" required aria-describedby="quote-quote-err-email"><span id="quote-quote-err-email" class="field-error" data-error="email" role="status" aria-live="polite"></span></label>
+      <label>Suburb or address <input type="text" name="suburb" autocomplete="street-address" required aria-describedby="quote-quote-err-suburb"><span id="quote-quote-err-suburb" class="field-error" data-error="suburb" role="status" aria-live="polite"></span></label>
       <label class="full">Type of work
         <select name="work">
           <option>Level 2 ASP</option>
@@ -81,7 +81,7 @@
           <option>Other</option>
         </select>
       </label>
-      <label class="full">A short description <textarea name="details" required></textarea><span class="field-error" data-error="details"></span></label>
+      <label class="full">A short description <textarea name="details" required aria-describedby="quote-quote-err-details"></textarea><span id="quote-quote-err-details" class="field-error" data-error="details" role="status" aria-live="polite"></span></label>
       <label>Preferred time to talk
         <select name="when">
           <option>Morning</option>
@@ -104,14 +104,14 @@
       <ol class="steps">
         <li data-n="1">Choose a day from the row, pick a time window, and leave your name and phone number.</li>
         <li data-n="2">Hit “Book a visit”.</li>
-        <li data-n="3">You’ll see a short thank-you.</li>
+        <li data-n="3">That’s it — your request is in.</li>
         <li data-n="4">We’ll be in touch to confirm the time.</li>
       </ol>
     </div>
     <div>
-    <form class="form-card" action="#" method="post">
-      <label>Name <input type="text" name="name" autocomplete="name" required><span class="field-error" data-error="name"></span></label>
-      <label>Phone <input type="tel" name="phone" autocomplete="tel" required><span class="field-error" data-error="phone"></span></label>
+    <form class="form-card" action="#" method="post" novalidate>
+      <label>Name <input type="text" name="name" autocomplete="name" required aria-describedby="quote-book-err-name"><span id="quote-book-err-name" class="field-error" data-error="name" role="status" aria-live="polite"></span></label>
+      <label>Phone <input type="tel" name="phone" autocomplete="tel" required aria-describedby="quote-book-err-phone"><span id="quote-book-err-phone" class="field-error" data-error="phone" role="status" aria-live="polite"></span></label>
       <div class="book-widget">
         <p class="widget-label">Preferred day</p>
         <div class="day-chips-wrap">
@@ -125,7 +125,7 @@
       <label class="full">Anything we should know <textarea name="notes"></textarea></label>
       <p class="book-summary full" data-summary></p>
       <div class="submit"><button class="btn btn-gold book-submit" type="submit">Book a visit</button></div>
-      <p class="form-error" data-form-error></p>
+      <p class="form-error" data-form-error role="status" aria-live="polite"></p>
     </form>
     <p class="success" data-success hidden tabindex="-1">Thank you. We'll be in touch to confirm the time.</p>
     </div>
