@@ -18,12 +18,19 @@
     try { localStorage.setItem("theme", theme); } catch (e) {}
   }
 
+  function syncHeaderH() {
+    var header = document.querySelector("header.site");
+    if (!header) return;
+    document.documentElement.style.setProperty("--header-h", header.offsetHeight + "px");
+  }
+
   function initTheme() {
     var btn = document.querySelector(".theme-toggle");
     if (!btn) return;
     btn.addEventListener("click", function () {
       var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       applyTheme(next);
+      requestAnimationFrame(syncHeaderH);
     });
   }
 
@@ -242,6 +249,11 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initTheme();
+    syncHeaderH();
+    window.addEventListener("resize", syncHeaderH);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncHeaderH);
+    }
     document.querySelectorAll("[data-booking]").forEach(initBooking);
     document.querySelectorAll("[data-quote]").forEach(initQuote);
   });
