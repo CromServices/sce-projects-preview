@@ -11,6 +11,7 @@
     "Air conditioning and ventilation",
     "Refrigeration"
   ];
+  var QUOTE_JOBS = JOBS.concat(["Other"]);
   var TIMES = ["Morning", "Afternoon", "Either"];
 
   function applyTheme(theme) {
@@ -211,20 +212,48 @@
     });
   }
 
+  function syncHiddenFromGroup(group, input) {
+    var checked = checkedRadio(group);
+    input.value = checked ? checked.dataset.label : "";
+  }
+
   function initQuote(root) {
     if (!root) return;
     var form = root.querySelector("form");
     var success = root.querySelector("[data-success]");
+    var jobs = root.querySelector("[data-quote-jobs]");
+    var times = root.querySelector("[data-quote-times]");
+    var workInput = form.querySelector('[name="work"]');
+    var whenInput = form.querySelector('[name="when"]');
+
+    jobs.setAttribute("role", "radiogroup");
+    times.setAttribute("role", "radiogroup");
+    var workLabel = jobs.previousElementSibling;
+    var whenLabel = times.previousElementSibling;
+    if (workLabel && workLabel.id) jobs.setAttribute("aria-labelledby", workLabel.id);
+    else jobs.setAttribute("aria-label", "Type of work");
+    if (whenLabel && whenLabel.id) times.setAttribute("aria-labelledby", whenLabel.id);
+    else times.setAttribute("aria-label", "Preferred time to talk");
+
+    buildPills(jobs, QUOTE_JOBS);
+    buildPills(times, TIMES);
+    bindRadiogroup(jobs);
+    bindRadiogroup(times);
+    syncHiddenFromGroup(jobs, workInput);
+    syncHiddenFromGroup(times, whenInput);
+    jobs.addEventListener("change", function () { syncHiddenFromGroup(jobs, workInput); });
+    times.addEventListener("change", function () { syncHiddenFromGroup(times, whenInput); });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var ok = true;
-      ["name", "phone", "email", "suburb", "details"].forEach(function (field) {
+      ["name", "phone", "email", "suburb", "details", "work", "when"].forEach(function (field) {
         var input = form.querySelector('[name="' + field + '"]');
         var err = form.querySelector('[data-error="' + field + '"]');
-        setText(err, "");
+        if (err) setText(err, "");
         input.removeAttribute("aria-invalid");
         if (!input.value.trim()) {
-          setText(err, "This field is needed.");
+          if (err) setText(err, "This field is needed.");
           input.setAttribute("aria-invalid", "true");
           ok = false;
         }

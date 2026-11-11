@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Electrical and refrigeration, Central Coast | SCE Projects</title>
+<title>SCE Projects</title>
 <meta name="description" content="Website preview.">
 <link rel="stylesheet" href="css/site.css">
 <script>
@@ -231,25 +231,17 @@
       <label>Phone <input type="tel" name="phone" autocomplete="tel" required aria-describedby="index-quote-err-phone"><span id="index-quote-err-phone" class="field-error" data-error="phone" role="status" aria-live="polite"></span></label>
       <label>Email <input type="email" name="email" autocomplete="email" required aria-describedby="index-quote-err-email"><span id="index-quote-err-email" class="field-error" data-error="email" role="status" aria-live="polite"></span></label>
       <label>Suburb or address <input type="text" name="suburb" autocomplete="street-address" required aria-describedby="index-quote-err-suburb"><span id="index-quote-err-suburb" class="field-error" data-error="suburb" role="status" aria-live="polite"></span></label>
-      <label class="full">Type of work
-        <select name="work">
-          <option>Level 2 ASP</option>
-          <option>Industrial</option>
-          <option>Commercial</option>
-          <option>Domestic</option>
-          <option>Air conditioning and ventilation</option>
-          <option>Refrigeration</option>
-          <option>Other</option>
-        </select>
-      </label>
+      <div class="full">
+        <p class="widget-label" id="index-quote-work-label">Type of work</p>
+        <div class="job-chips" data-quote-jobs></div>
+        <input type="hidden" name="work" value="" required>
+      </div>
       <label class="full">A short description <textarea name="details" required aria-describedby="index-quote-err-details"></textarea><span id="index-quote-err-details" class="field-error" data-error="details" role="status" aria-live="polite"></span></label>
-      <label>Preferred time to talk
-        <select name="when">
-          <option>Morning</option>
-          <option>Afternoon</option>
-          <option>Either</option>
-        </select>
-      </label>
+      <div class="full">
+        <p class="widget-label" id="index-quote-when-label">Preferred time to talk</p>
+        <div class="time-pills" data-quote-times></div>
+        <input type="hidden" name="when" value="" required>
+      </div>
       <div class="submit"><button class="btn btn-gold" type="submit">Request a quote</button></div>
     </form>
     <p class="success" data-success hidden tabindex="-1">Thank you. We’ll be in touch.</p>

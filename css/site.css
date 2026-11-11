@@ -97,7 +97,6 @@ h1, h2, h3 {
 .pill:focus-visible,
 a:focus-visible,
 input:focus-visible,
-select:focus-visible,
 textarea:focus-visible,
 button:focus-visible:not(.theme-toggle) {
   outline: 3px solid var(--focus);
@@ -379,9 +378,10 @@ h1 {
 }
 .time-pills, .job-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .pill {
-  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  min-height: 44px; padding: 8px 16px; border-radius: 999px;
   border: 1.5px solid var(--line); background: var(--input-bg);
   font: inherit; font-weight: 700; cursor: pointer; color: var(--ink);
+  max-width: 100%;
 }
 .chip.is-on, .pill.is-on {
   background: var(--selected-bg); color: var(--selected-fg); border-color: var(--selected-bg);
@@ -396,7 +396,7 @@ h1 {
 }
 .form-card label { display: flex; flex-direction: column; gap: 6px; font-size: 16px; font-weight: 700; color: var(--ink); }
 .form-card .full { grid-column: 1 / -1; }
-.form-card input, .form-card select, .form-card textarea {
+.form-card input, .form-card textarea {
   min-height: 44px; padding: 10px 12px; border: 1.5px solid var(--line);
   font: inherit; font-weight: 400; background: var(--input-bg); color: var(--ink);
 }
